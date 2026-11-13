@@ -459,17 +459,17 @@ HTML_TEMPLATE = """
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 {% if has_schedule %}
-                <button onclick="generateSchedule()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+                <button onclick="openRegenerateModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     🔄 Re-Generate
                 </button>
-                <button onclick="resetSchedule()" class="bg-slate-800 hover:bg-rose-900/60 text-slate-200 hover:text-rose-200 border border-slate-700 hover:border-rose-700/50 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+                <button onclick="openResetModal()" class="bg-slate-800 hover:bg-rose-900/60 text-slate-200 hover:text-rose-200 border border-slate-700 hover:border-rose-700/50 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     🗑️ Reset Schedule
                 </button>
                 <a href="/api/export/excel?year={{ year }}&month={{ month }}" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     📊 Export Excel
                 </a>
                 {% else %}
-                <button onclick="generateSchedule()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-bold shadow transition flex items-center gap-1.5">
+                <button onclick="openRegenerateModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-bold shadow transition flex items-center gap-1.5">
                     ✨ Generate Schedule
                 </button>
                 {% endif %}
@@ -538,7 +538,7 @@ HTML_TEMPLATE = """
                 <h3 class="text-lg font-bold text-slate-900">No Schedule Generated for {{ calendar.month_name[month] }} {{ year }}</h3>
                 <p class="text-xs text-slate-500 max-w-md mx-auto">Generate an optimized roster ensuring strictly balanced on-site staff (2 agents/day Mon–Fri) and fair rest days.</p>
             </div>
-            <button onclick="generateSchedule()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition inline-flex items-center gap-2">
+            <button onclick="openRegenerateModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition inline-flex items-center gap-2">
                 ✨ Generate Schedule Roster
             </button>
         </div>
@@ -804,6 +804,36 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
+    <!-- Re-Generate Confirmation Modal -->
+    <div id="regenerate-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4 border border-slate-100 text-center">
+            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-xl">🔄</div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900">Generate Schedule Roster?</h3>
+                <p class="text-xs text-slate-500">This will create or re-optimize the fair schedule for {{ calendar.month_name[month] }} {{ year }}.</p>
+            </div>
+            <div class="flex justify-center gap-2 pt-2">
+                <button type="button" onclick="closeRegenerateModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Cancel</button>
+                <button type="button" onclick="confirmRegenerate()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Yes, Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4 border border-slate-100 text-center">
+            <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mx-auto text-xl">🗑️</div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900">Reset Schedule Roster?</h3>
+                <p class="text-xs text-slate-500">This will clear all scheduled shifts for {{ calendar.month_name[month] }} {{ year }}.</p>
+            </div>
+            <div class="flex justify-center gap-2 pt-2">
+                <button type="button" onclick="closeResetModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Cancel</button>
+                <button type="button" onclick="confirmReset()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Yes, Reset</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const currentYear = {{ year }};
         const currentMonth = {{ month }};
@@ -911,7 +941,10 @@ HTML_TEMPLATE = """
             if (res.ok) location.reload();
         }
 
-        async function generateSchedule() {
+        function openRegenerateModal() { document.getElementById('regenerate-modal').classList.remove('hidden'); }
+        function closeRegenerateModal() { document.getElementById('regenerate-modal').classList.add('hidden'); }
+
+        async function confirmRegenerate() {
             const res = await fetch('/api/schedule/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -920,8 +953,10 @@ HTML_TEMPLATE = """
             if (res.ok) location.reload();
         }
 
-        async function resetSchedule() {
-            if (!confirm('Are you sure you want to reset the schedule for this month?')) return;
+        function openResetModal() { document.getElementById('reset-modal').classList.remove('hidden'); }
+        function closeResetModal() { document.getElementById('reset-modal').classList.add('hidden'); }
+
+        async function confirmReset() {
             const res = await fetch('/api/schedule/reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

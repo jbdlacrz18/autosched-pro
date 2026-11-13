@@ -34,7 +34,8 @@ DEFAULT_DATA = {
     ],
     "holidays": PHILIPPINE_HOLIDAYS,
     "leaves": [],
-    "schedule": {}
+    "schedule": {},
+    "reset_months": []
 }
 
 def load_data():
@@ -214,7 +215,7 @@ def index():
     month_key = f"{year}-{month:02d}"
     is_current_real_month = (year == now.year and month == now.month)
 
-    if month_key not in data["schedule"] and is_current_real_month:
+    if month_key not in data["schedule"] and month_key not in data.get("reset_months", []) and is_current_real_month:
         data["schedule"][month_key] = generate_monthly_schedule(year, month, data["agents"], data["holidays"], data.get("leaves", []))
         save_data(data)
 
@@ -324,14 +325,33 @@ def edit_schedule():
                 return jsonify({"success": True, "data": data})
     return jsonify({"success": False, "error": "Not found"}), 404
 
+@app.route("/api/schedule/reset", methods=["POST"])
+def reset_schedule():
+    req = request.json or {}
+    year = int(req.get("year", datetime.now().year))
+    month = int(req.get("month", datetime.now().month))
+    month_key = f"{year}-{month:02d}"
+
+    data = load_data()
+    if month_key in data["schedule"]:
+        del data["schedule"][month_key]
+    if "reset_months" not in data:
+        data["reset_months"] = []
+    if month_key not in data["reset_months"]:
+        data["reset_months"].append(month_key)
+    save_data(data)
+    return jsonify({"success": True, "data": data})
+
 @app.route("/api/schedule/generate", methods=["POST"])
 def generate_schedule():
     req = request.json or {}
     year = int(req.get("year", datetime.now().year))
-    month = int(request.get("month", datetime.now().month))
+    month = int(req.get("month", datetime.now().month))
     month_key = f"{year}-{month:02d}"
 
     data = load_data()
+    if "reset_months" in data and month_key in data["reset_months"]:
+        data["reset_months"].remove(month_key)
     data["schedule"][month_key] = generate_monthly_schedule(year, month, data["agents"], data["holidays"], data.get("leaves", []))
     save_data(data)
     return jsonify({"success": True, "data": data})
@@ -411,105 +431,126 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoSched Pro - Compact Calendar</title>
+    <title>AutoSched Pro - Enterprise Workforce Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-16">
-    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-30">
-        <div class="max-w-[98%] mx-auto px-3 py-3 flex flex-col md:flex-row justify-between items-center gap-3">
-            <div>
-                <h1 class="text-xl font-bold flex items-center gap-1.5">
-                    📅 AutoSched Pro Calendar
-                </h1>
-                <p class="text-indigo-200 text-[11px]">Fair Scheduling (Min 2 On-site Mon-Fri, Leave-Aware)</p>
+<body class="text-slate-800 min-h-screen pb-16 antialiased selection:bg-indigo-500 selection:text-white">
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 border-b border-slate-800">
+        <div class="max-w-[98%] mx-auto px-4 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-inner text-lg font-bold">
+                    📅
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        AutoSched Pro
+                        <span class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-medium">Enterprise Edition</span>
+                    </h1>
+                    <p class="text-slate-400 text-xs">Fair Workforce Scheduling • Min 2 On-site Mon–Fri • Leave & Holiday Aware</p>
+                </div>
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 {% if has_schedule %}
-                <button onclick="generateSchedule()" class="bg-indigo-700 hover:bg-indigo-800 px-2.5 py-1 rounded text-[11px] font-medium shadow transition flex items-center gap-1">
+                <button onclick="generateSchedule()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     🔄 Re-Generate
                 </button>
-                <a href="/api/export/excel?year={{ year }}&month={{ month }}" class="bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1 rounded text-[11px] font-medium shadow transition flex items-center gap-1">
+                <button onclick="resetSchedule()" class="bg-slate-800 hover:bg-rose-900/60 text-slate-200 hover:text-rose-200 border border-slate-700 hover:border-rose-700/50 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+                    🗑️ Reset Schedule
+                </button>
+                <a href="/api/export/excel?year={{ year }}&month={{ month }}" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     📊 Export Excel
                 </a>
                 {% else %}
-                <button onclick="generateSchedule()" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-xs font-bold shadow transition flex items-center gap-1">
+                <button onclick="generateSchedule()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-bold shadow transition flex items-center gap-1.5">
                     ✨ Generate Schedule
                 </button>
                 {% endif %}
-                <button onclick="openLeaveModal()" class="bg-rose-600 hover:bg-rose-700 px-2.5 py-1 rounded text-[11px] font-medium shadow transition">
-                    🌴 Leave Range
+                <div class="h-5 w-px bg-slate-700 mx-1"></div>
+                <button onclick="openLeaveModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+                    🌴 Leaves
                 </button>
-                <button onclick="openAgentModal()" class="bg-violet-600 hover:bg-violet-700 px-2.5 py-1 rounded text-[11px] font-semibold shadow transition">
+                <button onclick="openAgentModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     👥 Agents
                 </button>
-                <button onclick="openHolidayModal()" class="bg-amber-600 hover:bg-amber-700 px-2.5 py-1 rounded text-[11px] font-medium shadow transition">
+                <button onclick="openHolidayModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
                     🎉 Holidays
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-[98%] mx-auto px-1 py-4 space-y-4">
-        <!-- Month Navigation & Controls -->
-        <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-3 flex flex-col md:flex-row justify-between items-center gap-3">
-            <div class="flex items-center gap-2">
+    <main class="max-w-[98%] mx-auto px-2 py-6 space-y-4">
+        <!-- Month Navigation & Controls Bar -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
                 {% set prev_month = month - 1 if month > 1 else 12 %}
                 {% set prev_year = year if month > 1 else year - 1 %}
                 {% set next_month = month + 1 if month < 12 else 1 %}
                 {% set next_year = year if month < 12 else year + 1 %}
-                <a href="/?year={{ prev_year }}&month={{ prev_month }}" class="px-2.5 py-1 border border-slate-200 rounded text-xs hover:bg-slate-100 text-slate-600 font-bold">&larr; Prev</a>
-                <h2 class="text-base font-bold text-slate-800 w-44 text-center">
+                <a href="/?year={{ prev_year }}&month={{ prev_month }}" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition flex items-center gap-1">
+                    &larr; Prev
+                </a>
+                <h2 class="text-base font-bold text-slate-900 w-48 text-center tracking-tight">
                     {{ calendar.month_name[month] }} {{ year }}
                 </h2>
-                <a href="/?year={{ next_year }}&month={{ next_month }}" class="px-2.5 py-1 border border-slate-200 rounded text-xs hover:bg-slate-100 text-slate-600 font-bold">Next &rarr;</a>
+                <a href="/?year={{ next_year }}&month={{ next_month }}" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition flex items-center gap-1">
+                    Next &rarr;
+                </a>
             </div>
 
-            <!-- Agent Filter -->
-            <div class="flex items-center gap-2 w-full md:w-auto">
-                <label class="text-[11px] font-semibold text-slate-500">Filter:</label>
-                <select id="agent-filter" onchange="filterAgentSchedule()" class="px-2.5 py-1 border border-slate-300 rounded text-[11px] focus:ring-1 focus:ring-indigo-500 outline-none">
-                    <option value="all">All Agents</option>
-                    {% for agent in data.agents %}
-                    <option value="{{ agent.id }}">{{ agent.name }}</option>
-                    {% endfor %}
-                </select>
-                <button onclick="openLeaveModal()" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded text-[11px] font-semibold shadow">
-                    + Leave
-                </button>
+            <!-- Agent Filter & Quick Actions -->
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <div class="flex items-center gap-2">
+                    <label class="text-xs font-semibold text-slate-600">Filter Staff:</label>
+                    <select id="agent-filter" onchange="filterAgentSchedule()" class="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition">
+                        <option value="all">All Agents ({{ data.agents | length }})</option>
+                        {% for agent in data.agents %}
+                        <option value="{{ agent.id }}">{{ agent.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
         </div>
 
-        <!-- Legend -->
-        <div class="flex flex-wrap items-center gap-2 text-[11px] bg-white p-2 rounded border border-slate-200 shadow-sm">
-            <span class="font-semibold text-slate-600">Legend:</span>
-            <span class="px-1.5 py-0.5 bg-emerald-200 text-emerald-900 rounded font-semibold">On-site</span>
-            <span class="px-1.5 py-0.5 bg-blue-200 text-blue-900 rounded font-semibold">WFH</span>
-            <span class="px-1.5 py-0.5 bg-slate-300 text-slate-800 rounded font-semibold">Rest Day</span>
-            <span class="px-1.5 py-0.5 bg-rose-200 text-rose-900 rounded font-semibold">Leave</span>
-            <span class="px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-semibold">🎉 Holiday (WFH)</span>
+        <!-- Legend Bar -->
+        <div class="flex flex-wrap items-center gap-4 text-xs bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
+            <span class="font-bold text-slate-700 flex items-center gap-1.5">🏷️ Status Legend:</span>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span><span class="font-medium text-slate-600">On-site</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span><span class="font-medium text-slate-600">Work from Home</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-400 inline-block"></span><span class="font-medium text-slate-600">Rest Day</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span><span class="font-medium text-slate-600">Leave</span></div>
+            <div class="flex items-center gap-1.5 ml-auto"><span class="px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-200 rounded text-[11px] font-semibold">🎉 Holiday (WFH)</span></div>
         </div>
 
         {% if not has_schedule %}
         <!-- Empty State Notice -->
-        <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl p-10 text-center space-y-3">
-            <div class="text-3xl">🗓️</div>
-            <h3 class="text-base font-bold text-slate-700">No Schedule Generated for {{ calendar.month_name[month] }} {{ year }}</h3>
-            <p class="text-xs text-slate-500 max-w-sm mx-auto">Click below to generate fair shifts (Min 2 on-site Mon-Fri, Leave-Aware).</p>
-            <button onclick="generateSchedule()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-bold text-xs shadow transition">
-                ✨ Generate Schedule
+        <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-16 text-center space-y-4 shadow-sm">
+            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">🗓️</div>
+            <div class="space-y-1">
+                <h3 class="text-lg font-bold text-slate-900">No Schedule Generated for {{ calendar.month_name[month] }} {{ year }}</h3>
+                <p class="text-xs text-slate-500 max-w-md mx-auto">Generate an optimized roster ensuring strictly balanced on-site staff (2 agents/day Mon–Fri) and fair rest days.</p>
+            </div>
+            <button onclick="generateSchedule()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-md transition inline-flex items-center gap-2">
+                ✨ Generate Schedule Roster
             </button>
         </div>
         {% else %}
         <!-- Compact Calendar Grid (Month View) -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="grid grid-cols-7 bg-slate-100 border-b border-slate-200 text-center font-semibold text-[11px] text-slate-600 py-2 uppercase tracking-wider">
-                <div>Monday</div>
-                <div>Tuesday</div>
-                <div>Wednesday</div>
-                <div>Thursday</div>
-                <div>Friday</div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="grid grid-cols-7 bg-slate-100/80 border-b border-slate-200 text-center font-bold text-xs text-slate-600 py-3 uppercase tracking-wider">
+                <div class="text-slate-800">Monday</div>
+                <div class="text-slate-800">Tuesday</div>
+                <div class="text-slate-800">Wednesday</div>
+                <div class="text-slate-800">Thursday</div>
+                <div class="text-slate-800">Friday</div>
                 <div class="text-slate-400">Saturday</div>
                 <div class="text-slate-400">Sunday</div>
             </div>
@@ -521,35 +562,40 @@ HTML_TEMPLATE = """
                         {% set date_str = d.strftime('%Y-%m-%d') %}
                         {% set is_current_month = (d.month == month) %}
                         {% set day_sched = schedule.get(date_str, {}) %}
+                        {% set num_agents = data.agents | length %}
+                        {% set min_height = 95 + (num_agents * 34) %}
 
-                        <div class="bg-white min-h-[280px] p-1.5 flex flex-col justify-between {% if not is_current_month %}bg-slate-50/50 opacity-30{% endif %}">
+                        <div class="bg-white p-2 flex flex-col justify-between transition hover:bg-slate-50/80 {% if not is_current_month %}bg-slate-50/40 opacity-35{% endif %}" style="min-height: {{ min_height }}px; height: 100%;">
                             <div>
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-bold text-xs {% if is_current_month %}text-slate-900{% else %}text-slate-300{% endif %}">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs {% if is_current_month %} bg-slate-100 text-slate-900 border border-slate-200 {% else %} text-slate-300 {% endif %}">
                                         {{ d.day }}
                                     </span>
                                     {% if is_current_month %}
                                         {% set hol = data.holidays.get(date_str) %}
                                         {% if hol %}
-                                        <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1 py-0.2 rounded" title="{{ hol }}">🎉 {{ hol }}</span>
+                                        <span class="text-[10px] bg-amber-50 text-amber-800 font-bold px-1.5 py-0.5 rounded-md border border-amber-200 truncate max-w-[120px]" title="{{ hol }}">🎉 {{ hol }}</span>
                                         {% endif %}
                                     {% endif %}
                                 </div>
 
-                                <!-- Compact Agent shifts list -->
-                                <div class="space-y-1 overflow-y-auto max-h-[250px] text-[10px] pr-0.5" data-date="{{ date_str }}">
+                                <!-- Agent shifts list -->
+                                <div class="space-y-1.5 overflow-y-auto pr-0.5" data-date="{{ date_str }}">
                                     {% if is_current_month %}
                                         {% for agent in data.agents %}
                                         {% set agent_id = agent.id|string %}
-                                        {% set info = day_sched.get(agent_id, {'status': 'Work from Home', 'shift': '8AM-5PM'}) %}
-                                        <div class="agent-shift-item agent-box-{{ agent.id }} bg-slate-50 hover:bg-indigo-50 border border-slate-200 rounded px-1.5 py-1 cursor-pointer transition flex justify-between items-center"
+                                        {% set info = day_sched.get(agent_id, {'status': 'Work from Home', 'shift': '8:00 AM – 5:00 PM'}) %}
+                                        <div class="agent-shift-item agent-box-{{ agent.id }} bg-white hover:bg-indigo-50/60 border border-slate-200/80 hover:border-indigo-300 rounded-md px-1.5 py-1 cursor-pointer transition flex justify-between items-center group"
                                              onclick="openEditCellModal('{{ date_str }}', '{{ agent.id }}', '{{ agent.name }}', '{{ info.status }}', '{{ info.shift }}')">
-                                            <span class="font-bold text-slate-800 truncate max-w-[65px]" title="{{ agent.name }}">{{ agent.name }}</span>
-                                            <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold shrink-0
-                                                {% if info.status == 'On-site' %} bg-emerald-200 text-emerald-900
-                                                {% elif info.status == 'Work from Home' %} bg-blue-200 text-blue-900
-                                                {% elif info.status == 'Rest Day' %} bg-slate-300 text-slate-800
-                                                {% else %} bg-rose-200 text-rose-900 {% endif %}">
+                                            <div class="min-w-0 flex-1 pr-1">
+                                                <span class="font-bold text-slate-800 block text-[10px] group-hover:text-indigo-900 truncate leading-tight" title="{{ agent.name }}">{{ agent.name }}</span>
+                                                <span class="text-[9px] text-slate-500 block truncate font-medium leading-tight" title="{{ info.shift }}">{{ info.shift }}</span>
+                                            </div>
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0
+                                                {% if info.status == 'On-site' %} bg-emerald-100 text-emerald-800 border border-emerald-200
+                                                {% elif info.status == 'Work from Home' %} bg-blue-100 text-blue-800 border border-blue-200
+                                                {% elif info.status == 'Rest Day' %} bg-slate-200 text-slate-700 border border-slate-300
+                                                {% else %} bg-rose-100 text-rose-800 border border-rose-200 {% endif %}">
                                                 {{ info.status }}
                                             </span>
                                         </div>
@@ -566,87 +612,99 @@ HTML_TEMPLATE = """
     </main>
 
     <!-- Add Leave Range Modal -->
-    <div id="leave-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 space-y-3">
-            <h3 class="text-base font-bold text-slate-800">🌴 Add Agent Leave Date Range</h3>
-            <p class="text-[11px] text-slate-500">Select an agent and a date range for leave. Shifts will be fairly redistributed among available staff.</p>
+    <div id="leave-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 border border-slate-100">
+            <div class="flex justify-between items-center">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">🌴 Manage Agent Leave Ranges</h3>
+                <button onclick="closeLeaveModal()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">&times;</button>
+            </div>
+            <p class="text-xs text-slate-500">Record leaves. Shifts will be automatically redistributed among available staff.</p>
 
-            <div class="max-h-40 overflow-y-auto border border-slate-200 rounded text-xs">
+            <div class="max-h-44 overflow-y-auto border border-slate-200 rounded-xl text-xs bg-slate-50/50">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-slate-600">
+                    <thead class="bg-slate-100 text-slate-700 font-semibold sticky top-0">
                         <tr>
-                            <th class="p-1.5">Agent</th>
-                            <th class="p-1.5">Start</th>
-                            <th class="p-1.5">End</th>
-                            <th class="p-1.5 text-right">Action</th>
+                            <th class="p-2">Agent</th>
+                            <th class="p-2">Start</th>
+                            <th class="p-2">End</th>
+                            <th class="p-2 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-slate-200 bg-white">
                         {% for i in range(data.get('leaves', []) | length) %}
                         {% set l = data.get('leaves', [])[i] %}
                         {% set leave_agent = data.agents | selectattr('id', 'equalto', l.agent_id) | first %}
-                        <tr class="border-b border-slate-100">
-                            <td class="p-1.5 font-bold">{{ leave_agent.name if leave_agent else 'Unknown' }}</td>
-                            <td class="p-1.5">{{ l.start_date }}</td>
-                            <td class="p-1.5">{{ l.end_date }}</td>
-                            <td class="p-1.5 text-right"><button onclick="removeLeave({{ i }})" class="text-rose-600 hover:underline">Remove</button></td>
+                        <tr>
+                            <td class="p-2 font-bold text-slate-800">{{ leave_agent.name if leave_agent else 'Unknown' }}</td>
+                            <td class="p-2 text-slate-600">{{ l.start_date }}</td>
+                            <td class="p-2 text-slate-600">{{ l.end_date }}</td>
+                            <td class="p-2 text-right"><button onclick="removeLeave({{ i }})" class="text-rose-600 hover:text-rose-800 font-semibold">Remove</button></td>
                         </tr>
                         {% endfor %}
+                        {% if not data.get('leaves') %}
+                        <tr>
+                            <td colspan="4" class="p-4 text-center text-slate-400 italic">No leaves recorded.</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
 
-            <form onsubmit="submitLeave(event)" class="bg-slate-50 p-2.5 rounded border border-slate-200 space-y-2 text-xs">
+            <form onsubmit="submitLeave(event)" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3 text-xs">
+                <h4 class="font-bold text-slate-800">Add New Leave Range</h4>
                 <div>
-                    <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Select Agent</label>
-                    <select id="leave-agent-id" required class="w-full px-2 py-1.5 border border-slate-300 rounded text-xs">
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Select Staff Member</label>
+                    <select id="leave-agent-id" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
                         {% for agent in data.agents %}
-                        <option value="{{ agent.id }}">{{ agent.name }}</option>
+                        <option value="{{ agent.id }}">{{ agent.name }} ({{ agent.role }})</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Start Date</label>
-                        <input type="date" id="leave-start-date" required class="w-full px-2 py-1.5 border border-slate-300 rounded text-xs">
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Start Date</label>
+                        <input type="date" id="leave-start-date" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">End Date</label>
-                        <input type="date" id="leave-end-date" required class="w-full px-2 py-1.5 border border-slate-300 rounded text-xs">
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">End Date</label>
+                        <input type="date" id="leave-end-date" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
                     </div>
                 </div>
                 <div class="flex justify-end pt-1">
-                    <button type="submit" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-semibold shadow">Add Leave Range & Redistribute</button>
+                    <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Add Leave & Redistribute</button>
                 </div>
             </form>
 
-            <div class="flex justify-end pt-1">
-                <button type="button" onclick="closeLeaveModal()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 rounded text-xs font-semibold">Close</button>
+            <div class="flex justify-end pt-2">
+                <button type="button" onclick="closeLeaveModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Close & Refresh</button>
             </div>
         </div>
     </div>
 
     <!-- Agent Management Modal -->
-    <div id="agent-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 space-y-3">
-            <h3 class="text-base font-bold text-slate-800">👥 Agent Management</h3>
-            <div class="max-h-48 overflow-y-auto border border-slate-200 rounded text-xs">
+    <div id="agent-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 border border-slate-100">
+            <div class="flex justify-between items-center">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">👥 Agent Directory</h3>
+                <button onclick="closeAgentModal()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">&times;</button>
+            </div>
+            <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl text-xs bg-slate-50/50">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-slate-600">
+                    <thead class="bg-slate-100 text-slate-700 font-semibold sticky top-0">
                         <tr>
-                            <th class="p-1.5">Name</th>
-                            <th class="p-1.5">Role</th>
-                            <th class="p-1.5 text-right">Actions</th>
+                            <th class="p-2">Name</th>
+                            <th class="p-2">Role</th>
+                            <th class="p-2 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-slate-200 bg-white">
                         {% for agent in data.agents %}
-                        <tr class="border-b border-slate-100">
-                            <td class="p-1.5 font-bold text-slate-800">{{ agent.name }}</td>
-                            <td class="p-1.5 text-slate-600">{{ agent.role }}</td>
-                            <td class="p-1.5 text-right space-x-2">
-                                <button onclick="startEditAgent({{ agent.id }}, '{{ agent.name }}', '{{ agent.role }}')" class="text-indigo-600 hover:underline">Edit</button>
-                                <button onclick="deleteAgent({{ agent.id }})" class="text-rose-600 hover:underline">Delete</button>
+                        <tr>
+                            <td class="p-2 font-bold text-slate-800">{{ agent.name }}</td>
+                            <td class="p-2 text-slate-600">{{ agent.role }}</td>
+                            <td class="p-2 text-right space-x-2">
+                                <button onclick="startEditAgent({{ agent.id }}, '{{ agent.name }}', '{{ agent.role }}')" class="text-indigo-600 hover:text-indigo-800 font-semibold">Edit</button>
+                                <button onclick="deleteAgent({{ agent.id }})" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -654,43 +712,46 @@ HTML_TEMPLATE = """
                 </table>
             </div>
 
-            <form onsubmit="submitAgentForm(event)" class="bg-slate-50 p-2.5 rounded border border-slate-200 space-y-2 text-xs">
-                <h4 class="font-bold text-slate-700" id="agent-form-title">Add New Agent</h4>
+            <form onsubmit="submitAgentForm(event)" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3 text-xs">
+                <h4 class="font-bold text-slate-800" id="agent-form-title">Add New Agent</h4>
                 <input type="hidden" id="edit-agent-id" value="">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="agent-name-input" placeholder="Name" required class="px-2 py-1.5 border border-slate-300 rounded text-xs">
-                    <input type="text" id="agent-role-input" placeholder="Role" value="Support Agent" required class="px-2 py-1.5 border border-slate-300 rounded text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="agent-name-input" placeholder="Full Name" required class="px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
+                    <input type="text" id="agent-role-input" placeholder="Role / Title" value="Support Agent" required class="px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
                 </div>
                 <div class="flex justify-end gap-2">
-                    <button type="button" onclick="resetAgentForm()" id="agent-cancel-btn" class="hidden px-2.5 py-1 bg-slate-200 hover:bg-slate-300 rounded text-xs font-semibold">Cancel</button>
-                    <button type="submit" id="agent-submit-btn" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold">Add</button>
+                    <button type="button" onclick="resetAgentForm()" id="agent-cancel-btn" class="hidden px-3 py-2 bg-slate-200 hover:bg-slate-300 rounded-lg text-xs font-semibold text-slate-700 transition">Cancel</button>
+                    <button type="submit" id="agent-submit-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Add Agent</button>
                 </div>
             </form>
 
-            <div class="flex justify-end pt-1">
-                <button type="button" onclick="closeAgentModal()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 rounded text-xs font-semibold">Close</button>
+            <div class="flex justify-end pt-2">
+                <button type="button" onclick="closeAgentModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Close & Refresh</button>
             </div>
         </div>
     </div>
 
     <!-- Edit Shift Modal -->
-    <div id="edit-cell-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-5 space-y-3">
-            <h3 class="text-base font-bold text-slate-800" id="edit-modal-title">Edit Shift</h3>
-            <form onsubmit="submitEditCell(event)" class="space-y-3 text-xs">
+    <div id="edit-cell-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4 border border-slate-100">
+            <div class="flex justify-between items-center">
+                <h3 class="text-base font-bold text-slate-900" id="edit-modal-title">Edit Shift Assignment</h3>
+                <button onclick="closeEditCellModal()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">&times;</button>
+            </div>
+            <form onsubmit="submitEditCell(event)" class="space-y-3.5 text-xs">
                 <input type="hidden" id="edit-date-str">
                 <input type="hidden" id="edit-cell-agent-id">
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-1">Status</label>
-                    <select id="edit-status" class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-indigo-500 outline-none">
+                    <label class="block font-semibold text-slate-700 mb-1">Status</label>
+                    <select id="edit-status" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
                         {% for status in statuses %}
                         <option value="{{ status }}">{{ status }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-1">Shift Time</label>
-                    <select id="edit-shift" class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-indigo-500 outline-none">
+                    <label class="block font-semibold text-slate-700 mb-1">Shift Time</label>
+                    <select id="edit-shift" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none">
                         {% for shift in shifts %}
                         <option value="{{ shift }}">{{ shift }}</option>
                         {% endfor %}
@@ -698,44 +759,47 @@ HTML_TEMPLATE = """
                     </select>
                 </div>
                 <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeEditCellModal()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 rounded text-xs font-semibold">Cancel</button>
-                    <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold shadow">Save</button>
+                    <button type="button" onclick="closeEditCellModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Holidays Modal -->
-    <div id="holiday-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 space-y-3">
-            <h3 class="text-base font-bold text-slate-800">Philippine Holidays</h3>
-            <div class="max-h-48 overflow-y-auto border border-slate-200 rounded text-xs">
+    <div id="holiday-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 border border-slate-100">
+            <div class="flex justify-between items-center">
+                <h3 class="text-base font-bold text-slate-900">🎉 Philippine Holidays Management</h3>
+                <button onclick="closeHolidayModal()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">&times;</button>
+            </div>
+            <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl text-xs bg-slate-50/50">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-slate-600">
+                    <thead class="bg-slate-100 text-slate-700 font-semibold sticky top-0">
                         <tr>
-                            <th class="p-1.5">Date</th>
-                            <th class="p-1.5">Name</th>
-                            <th class="p-1.5 text-right">Action</th>
+                            <th class="p-2">Date</th>
+                            <th class="p-2">Name</th>
+                            <th class="p-2 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-slate-200 bg-white">
                         {% for date, name in data.holidays.items() %}
-                        <tr class="border-b border-slate-100">
-                            <td class="p-1.5 font-medium">{{ date }}</td>
-                            <td class="p-1.5">{{ name }}</td>
-                            <td class="p-1.5 text-right"><button onclick="removeHoliday('{{ date }}')" class="text-rose-600 hover:underline">Remove</button></td>
+                        <tr>
+                            <td class="p-2 font-medium text-slate-800">{{ date }}</td>
+                            <td class="p-2 text-slate-600">{{ name }}</td>
+                            <td class="p-2 text-right"><button onclick="removeHoliday('{{ date }}')" class="text-rose-600 hover:text-rose-800 font-semibold">Remove</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
             <form onsubmit="addHoliday(event)" class="flex gap-2 pt-1 text-xs">
-                <input type="date" id="new-hol-date" required class="px-2 py-1.5 border border-slate-300 rounded text-xs">
-                <input type="text" id="new-hol-name" placeholder="Holiday Name" required class="flex-1 px-2 py-1.5 border border-slate-300 rounded text-xs">
-                <button type="submit" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-semibold">Add</button>
+                <input type="date" id="new-hol-date" required class="px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/25 outline-none">
+                <input type="text" id="new-hol-name" placeholder="Holiday Name" required class="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-indigo-500/25 outline-none">
+                <button type="submit" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Add</button>
             </form>
-            <div class="flex justify-end pt-1">
-                <button type="button" onclick="closeHolidayModal()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 rounded text-xs font-semibold">Close</button>
+            <div class="flex justify-end pt-2">
+                <button type="button" onclick="closeHolidayModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Close & Refresh</button>
             </div>
         </div>
     </div>
@@ -758,7 +822,7 @@ HTML_TEMPLATE = """
             document.getElementById('agent-name-input').value = name;
             document.getElementById('agent-role-input').value = role;
             document.getElementById('agent-form-title').innerText = `Edit Agent #${id}`;
-            document.getElementById('agent-submit-btn').innerText = 'Update';
+            document.getElementById('agent-submit-btn').innerText = 'Update Agent';
             document.getElementById('agent-cancel-btn').classList.remove('hidden');
         }
 
@@ -767,7 +831,7 @@ HTML_TEMPLATE = """
             document.getElementById('agent-name-input').value = '';
             document.getElementById('agent-role-input').value = 'Support Agent';
             document.getElementById('agent-form-title').innerText = 'Add New Agent';
-            document.getElementById('agent-submit-btn').innerText = 'Add';
+            document.getElementById('agent-submit-btn').innerText = 'Add Agent';
             document.getElementById('agent-cancel-btn').classList.add('hidden');
         }
 
@@ -849,6 +913,16 @@ HTML_TEMPLATE = """
 
         async function generateSchedule() {
             const res = await fetch('/api/schedule/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ year: currentYear, month: currentMonth })
+            });
+            if (res.ok) location.reload();
+        }
+
+        async function resetSchedule() {
+            if (!confirm('Are you sure you want to reset the schedule for this month?')) return;
+            const res = await fetch('/api/schedule/reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ year: currentYear, month: currentMonth })

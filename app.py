@@ -704,7 +704,7 @@ HTML_TEMPLATE = """
                             <td class="p-2 text-slate-600">{{ agent.role }}</td>
                             <td class="p-2 text-right space-x-2">
                                 <button onclick="startEditAgent({{ agent.id }}, '{{ agent.name }}', '{{ agent.role }}')" class="text-indigo-600 hover:text-indigo-800 font-semibold">Edit</button>
-                                <button onclick="deleteAgent({{ agent.id }})" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
+                                <button onclick="openDeleteAgentModal({{ agent.id }}, '{{ agent.name }}')" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -834,6 +834,22 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
+    <!-- Delete Agent Confirmation Modal -->
+    <div id="delete-agent-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4 border border-slate-100 text-center">
+            <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mx-auto text-xl">⚠️</div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900">Delete Staff Member?</h3>
+                <p class="text-xs text-slate-500" id="delete-agent-msg">Are you sure you want to delete this agent? This action cannot be undone.</p>
+                <input type="hidden" id="delete-agent-id-input" value="">
+            </div>
+            <div class="flex justify-center gap-2 pt-2">
+                <button type="button" onclick="closeDeleteAgentModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Cancel</button>
+                <button type="button" onclick="confirmDeleteAgent()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const currentYear = {{ year }};
         const currentMonth = {{ month }};
@@ -888,10 +904,53 @@ HTML_TEMPLATE = """
             location.reload();
         }
 
-        async function deleteAgent(id) {
-            if (!confirm('Are you sure you want to delete this agent?')) return;
-            await fetch(`/api/agents/${id}`, { method: 'DELETE' });
-            location.reload();
+        function openDeleteAgentModal(id, name) {
+            document.getElementById('delete-agent-id-input').value = id;
+            document.getElementById('delete-agent-msg').innerText = `Are you sure you want to delete ${name}? This action cannot be undone.`;
+            document.getElementById('delete-agent-modal').classList.remove('hidden');
+        }
+
+        function closeDeleteAgentModal() {
+            document.getElementById('delete-agent-modal').classList.add('hidden');
+        }
+
+        async function confirmDeleteAgent() {
+            const id = document.getElementById('delete-agent-id-input').value;
+            const res = await fetch(`/api/agents/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                closeDeleteAgentModal();
+                // Fetch updated data to update the agent table without closing the agent modal
+                const dataRes = await fetch('/api/data');
+                const data = await dataRes.json();
+
+                // Update agent table tbody
+                const tbody = document.querySelector('#agent-modal tbody');
+                if (tbody) {
+                    tbody.innerHTML = data.agents.map(agent => `
+                        <tr>
+                            <td class="p-2 font-bold text-slate-800">${agent.name}</td>
+                            <td class="p-2 text-slate-600">${agent.role}</td>
+                            <td class="p-2 text-right space-x-2">
+                                <button onclick="startEditAgent(${agent.id}, '${agent.name}', '${agent.role}')" class="text-indigo-600 hover:text-indigo-800 font-semibold">Edit</button>
+                                <button onclick="openDeleteAgentModal(${agent.id}, '${agent.name}')" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+
+                // Also update leave modal agent select and main filter if present
+                const leaveSelect = document.getElementById('leave-agent-id');
+                if (leaveSelect) {
+                    leaveSelect.innerHTML = data.agents.map(a => `<option value="${a.id}">${a.name} (${a.role})</option>`).join('');
+                }
+                const agentFilter = document.getElementById('agent-filter');
+                if (agentFilter) {
+                    const currentVal = agentFilter.value;
+                    agentFilter.innerHTML = `<option value="all">All Agents (${data.agents.length})</option>` +
+                        data.agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+                    agentFilter.value = currentVal;
+                }
+            }
         }
 
         async function submitLeave(e) {

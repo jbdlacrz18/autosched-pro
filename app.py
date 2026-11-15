@@ -66,7 +66,7 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
     """
     random.seed(42 + year * 1000 + month * 37)
     month_schedule = {}
-    cal = calendar.Calendar(firstweekday=0)
+    cal = calendar.Calendar(firstweekday=6)
     month_weeks = cal.monthdatescalendar(year, month)
 
     leave_set = set()
@@ -91,21 +91,22 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
     # --- STEP 1: Generate Week 1 Template Pattern ---
     week1 = month_weeks[0]
     agent_week1_template = {}
-    daily_onsite_count = {d: 0 for d in range(5)}
+    WEEKDAYS = [1, 2, 3, 4, 5]
+    daily_onsite_count = {d: 0 for d in WEEKDAYS}
     agent_week1_onsite = {}
     agent_week1_rest = {}
 
     for aid in agent_ids:
-        available_weekdays = [d for d in range(5) if (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set and daily_onsite_count[d] < 2]
+        available_weekdays = [d for d in WEEKDAYS if (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set and daily_onsite_count[d] < 2]
         if len(available_weekdays) < 2:
-            available_weekdays = [d for d in range(5) if (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set]
+            available_weekdays = [d for d in WEEKDAYS if (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set]
         if len(available_weekdays) >= 2:
             available_weekdays.sort(key=lambda d: daily_onsite_count[d])
             chosen_onsite = set(available_weekdays[:2])
         else:
             chosen_onsite = set(available_weekdays)
             while len(chosen_onsite) < 2:
-                fallback_d = random.choice([d for d in range(5) if d not in chosen_onsite])
+                fallback_d = random.choice([d for d in WEEKDAYS if d not in chosen_onsite])
                 chosen_onsite.add(fallback_d)
 
         for d in chosen_onsite:
@@ -126,7 +127,7 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
     random.seed(42 + year * 100 + month)
 
     # Balance daily onsite count to exactly 2 per weekday in Week 1
-    for d in range(5):
+    for d in WEEKDAYS:
         current_onsite_agents = [aid for aid in agent_ids if d in agent_week1_onsite.get(aid, set())]
         while len(current_onsite_agents) < 2:
             candidates = [aid for aid in agent_ids if d not in agent_week1_onsite.get(aid, set()) and d not in agent_week1_rest.get(aid, set())]
@@ -142,7 +143,7 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
         while len(current_onsite_agents) > 2:
             excess_aid = current_onsite_agents.pop()
             agent_week1_onsite[excess_aid].discard(d)
-            open_d = [day for day in range(5) if day not in agent_week1_onsite[excess_aid] and day not in agent_week1_rest[excess_aid]]
+            open_d = [day for day in WEEKDAYS if day not in agent_week1_onsite[excess_aid] and day not in agent_week1_rest[excess_aid]]
             if open_d:
                 agent_week1_onsite[excess_aid].add(open_d[0])
 
@@ -377,7 +378,7 @@ def export_excel():
     agents = data["agents"]
     month_sched = data["schedule"].get(month_key, {})
 
-    cal = calendar.Calendar(firstweekday=0)
+    cal = calendar.Calendar(firstweekday=6)
     month_weeks = cal.monthdatescalendar(year, month)
 
     rows = []
@@ -536,17 +537,17 @@ HTML_TEMPLATE = """
         <!-- Compact Calendar Grid (Month View) -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="grid grid-cols-7 bg-slate-100/80 border-b border-slate-200 text-center font-bold text-xs text-slate-600 py-3 uppercase tracking-wider">
+                <div class="text-slate-400">Sunday</div>
                 <div class="text-slate-800">Monday</div>
                 <div class="text-slate-800">Tuesday</div>
                 <div class="text-slate-800">Wednesday</div>
                 <div class="text-slate-800">Thursday</div>
                 <div class="text-slate-800">Friday</div>
                 <div class="text-slate-400">Saturday</div>
-                <div class="text-slate-400">Sunday</div>
             </div>
 
             <div class="grid grid-cols-7 auto-rows-fr bg-slate-200 gap-px" id="calendar-grid">
-                {% set month_cal = calendar.Calendar(firstweekday=0).monthdatescalendar(year, month) %}
+                {% set month_cal = calendar.Calendar(firstweekday=6).monthdatescalendar(year, month) %}
                 {% for week in month_cal %}
                     {% for d in week %}
                         {% set date_str = d.strftime('%Y-%m-%d') %}

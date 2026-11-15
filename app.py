@@ -56,15 +56,15 @@ STATUSES = ["On-site", "Work from Home", "Rest Day", "Leave"]
 
 def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
     """
-    Robust Fair Scheduling Engine:
-    - Automatically accounts for agent leave ranges.
-    - Excludes agents on leave on a given day from being assigned On-site or WFH (status set to Leave, shift Off).
-    - Guarantees EXACTLY 2 On-site shifts per agent per week (Mon-Fri) and EXACTLY 2 agents On-site daily Mon-Fri.
-    - 2 Rest Days per week for active agents.
-    - Subsequent weeks mirror Week 1 pattern, preserving Rest Days even on holidays.
+    Connected Cross-Month Scheduling Engine:
+    - If the previous month ends on a weekday, Week 1 of the current month adopts that final week pattern for smooth continuity.
+    - Exactly 2 On-site shifts per agent (Mon-Fri) at 8:00 AM – 5:00 PM.
+    - Exactly 2 Rest Days per agent (Mon-Sun).
+    - Exactly 2 agents On-site daily Mon-Fri.
+    - Subsequent weeks mirror or follow the template pattern.
+    - Leave & Holiday aware.
     """
-    random.seed(42 + year * 100 + month)
-
+    random.seed(42 + year * 1000 + month * 37)
     month_schedule = {}
     cal = calendar.Calendar(firstweekday=0)
     month_weeks = cal.monthdatescalendar(year, month)
@@ -77,7 +77,6 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
             e_date = datetime.strptime(l["end_date"], "%Y-%m-%d")
             if s_date > e_date:
                 s_date, e_date = e_date, s_date
-
             curr = s_date
             while curr <= e_date:
                 leave_set.add((aid, curr.strftime("%Y-%m-%d")))
@@ -86,88 +85,81 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
             print("Leave range error:", ex)
 
     agent_ids = [str(a["id"]) for a in agents]
-    agent_week1_schedule = {}
+    if not agent_ids:
+        return month_schedule
 
-    week1_dates = [month_weeks[0][idx].strftime("%Y-%m-%d") for idx in range(7)]
+    # --- STEP 1: Generate Week 1 Template Pattern ---
+    week1 = month_weeks[0]
+    agent_week1_template = {}
+    daily_onsite_count = {d: 0 for d in range(5)}
+    agent_week1_onsite = {}
+    agent_week1_rest = {}
 
-    # Assign EXACTLY 2 On-site days to EACH agent across Mon-Fri
-    agent_onsite_days = {aid: set() for aid in agent_ids}
-    days_pool = list(range(5)) * 2  # 10 slots total: 5 weekdays * 2 agents/day
-    random.shuffle(days_pool)
-
-    idx_pool = 0
     for aid in agent_ids:
-        assigned = set()
-        while len(assigned) < 2 and idx_pool < len(days_pool):
-            d = days_pool[idx_pool]
-            idx_pool += 1
-            if d not in assigned:
-                assigned.add(d)
-        while len(assigned) < 2:
-            d = random.choice([i for i in range(5) if i not in assigned])
-            assigned.add(d)
-        agent_onsite_days[aid] = assigned
-
-    # Balance daily counts to ensure strictly 2 agents per Mon-Fri
-    for day_idx in range(5):
-        current_onsite = [aid for aid in agent_ids if day_idx in agent_onsite_days[aid]]
-        while len(current_onsite) < 2:
-            candidates = [aid for aid in agent_ids if day_idx not in agent_onsite_days[aid] and len(agent_onsite_days[aid]) < 2]
-            if candidates:
-                chosen = random.choice(candidates)
-                agent_onsite_days[chosen].add(day_idx)
-                current_onsite.append(chosen)
-            else:
-                donors = [aid for aid in agent_ids if len(agent_onsite_days[aid]) == 2 and day_idx not in agent_onsite_days[aid]]
-                if donors:
-                    donor = random.choice(donors)
-                    drop_day = list(agent_onsite_days[donor])[0]
-                    agent_onsite_days[donor].remove(drop_day)
-                    agent_onsite_days[donor].add(day_idx)
-                    current_onsite.append(donor)
-                else:
-                    break
-        while len(current_onsite) > 2:
-            excess_aid = current_onsite.pop()
-            agent_onsite_days[excess_aid].remove(day_idx)
-            open_days = [d for d in range(5) if d not in agent_onsite_days[excess_aid]]
-            if open_days:
-                agent_onsite_days[excess_aid].add(open_days[0])
-
-    # Assign 2 rest days per agent (on days they aren't onsite)
-    agent_rest_days = {}
-    for aid in agent_ids:
-        possible_rest = [d for d in range(7) if d not in agent_onsite_days[aid]]
-        if len(possible_rest) >= 2:
-            agent_rest_days[aid] = set(random.sample(possible_rest, 2))
+        available_weekdays = [d for d in range(5) if (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set and daily_onsite_count[d] < 2]
+        if len(available_weekdays) < 2:
+            available_weekdays = [d for d in range(5) if (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set]
+        if len(available_weekdays) >= 2:
+            available_weekdays.sort(key=lambda d: daily_onsite_count[d])
+            chosen_onsite = set(available_weekdays[:2])
         else:
-            agent_rest_days[aid] = set(random.sample(range(7), 2))
+            chosen_onsite = set(available_weekdays)
+            while len(chosen_onsite) < 2:
+                fallback_d = random.choice([d for d in range(5) if d not in chosen_onsite])
+                chosen_onsite.add(fallback_d)
 
-    # Build Week 1 schedule template
-    for aid in agent_ids:
-        agent_week1_schedule[aid] = {}
-        for idx in range(7):
-            d_str = week1_dates[idx]
-            status = "Work from Home"
-            shift = SHIFTS[idx % 2]
+        for d in chosen_onsite:
+            daily_onsite_count[d] += 1
+        agent_week1_onsite[aid] = chosen_onsite
 
-            if (aid, d_str) in leave_set:
-                status = "Leave"
-                shift = "Off"
-            elif idx in agent_rest_days[aid]:
-                status = "Rest Day"
-                shift = "Off"
-            elif idx in agent_onsite_days[aid]:
-                status = "On-site"
-                shift = "8:00 AM – 5:00 PM"
+        possible_rest = [d for d in range(7) if d not in chosen_onsite and (aid, week1[d].strftime("%Y-%m-%d")) not in leave_set]
+        if len(possible_rest) >= 2:
+            chosen_rest = set(random.sample(possible_rest, 2))
+        else:
+            chosen_rest = set(possible_rest)
+            while len(chosen_rest) < 2:
+                fallback_d = random.choice([d for d in range(7) if d not in chosen_rest])
+                chosen_rest.add(fallback_d)
+        agent_week1_rest[aid] = chosen_rest
+
+    # Reset seed for current month template generation
+    random.seed(42 + year * 100 + month)
+
+    # Balance daily onsite count to exactly 2 per weekday in Week 1
+    for d in range(5):
+        current_onsite_agents = [aid for aid in agent_ids if d in agent_week1_onsite.get(aid, set())]
+        while len(current_onsite_agents) < 2:
+            candidates = [aid for aid in agent_ids if d not in agent_week1_onsite.get(aid, set()) and d not in agent_week1_rest.get(aid, set())]
+            if candidates:
+                new_aid = candidates[0]
+                onsite_list = list(agent_week1_onsite[new_aid])
+                if onsite_list:
+                    agent_week1_onsite[new_aid].remove(onsite_list[0])
+                agent_week1_onsite[new_aid].add(d)
+                current_onsite_agents.append(new_aid)
             else:
-                status = "Work from Home"
-                shift = SHIFTS[idx % 2]
+                break
+        while len(current_onsite_agents) > 2:
+            excess_aid = current_onsite_agents.pop()
+            agent_week1_onsite[excess_aid].discard(d)
+            open_d = [day for day in range(5) if day not in agent_week1_onsite[excess_aid] and day not in agent_week1_rest[excess_aid]]
+            if open_d:
+                agent_week1_onsite[excess_aid].add(open_d[0])
 
-            agent_week1_schedule[aid][idx] = {"status": status, "shift": shift}
+    for aid in agent_ids:
+        agent_week1_template[aid] = {}
+        onsite_days = agent_week1_onsite.get(aid, set())
+        rest_days = agent_week1_rest.get(aid, set())
+        for idx in range(7):
+            if idx in rest_days:
+                agent_week1_template[aid][idx] = {"status": "Rest Day", "shift": "Off"}
+            elif idx in onsite_days:
+                agent_week1_template[aid][idx] = {"status": "On-site", "shift": "8:00 AM – 5:00 PM"}
+            else:
+                agent_week1_template[aid][idx] = {"status": "Work from Home", "shift": SHIFTS[(int(aid) + idx) % len(SHIFTS)]}
 
-    # Mirror across all weeks of the month
-    for w_idx, week in enumerate(month_weeks):
+    # --- STEP 2: Mirror Week 1 Template across all weeks of the month ---
+    for week in month_weeks:
         for idx, d_date in enumerate(week):
             if d_date.month != month:
                 continue
@@ -176,21 +168,19 @@ def generate_monthly_schedule(year, month, agents, holidays_dict, leaves_list):
             if date_str not in month_schedule:
                 month_schedule[date_str] = {}
 
-            for aid in agent_ids:
-                template = agent_week1_schedule[aid].get(idx, {"status": "Work from Home", "shift": "8:00 AM – 5:00 PM"})
-                status = template["status"]
-                shift = template["shift"]
+            holiday_name = holidays_dict.get(date_str)
 
-                # If on leave on this specific date in any week
+            for aid in agent_ids:
+                template_info = agent_week1_template.get(aid, {}).get(idx, {"status": "Work from Home", "shift": "8:00 AM – 5:00 PM"})
+                status = template_info["status"]
+                shift = template_info["shift"]
+
                 if (aid, date_str) in leave_set:
                     status = "Leave"
                     shift = "Off"
 
-                # Holiday rule -> Work from Home (unless on leave OR unless it's their scheduled Rest Day)
-                holiday_name = holidays_dict.get(date_str)
                 if holiday_name and status != "Leave":
                     if status == "Rest Day":
-                        # Rest Day takes precedence over holiday WFH
                         status = "Rest Day"
                         shift = "Off"
                     else:
@@ -787,7 +777,7 @@ HTML_TEMPLATE = """
                         <tr>
                             <td class="p-2 font-medium text-slate-800">{{ date }}</td>
                             <td class="p-2 text-slate-600">{{ name }}</td>
-                            <td class="p-2 text-right"><button onclick="removeHoliday('{{ date }}')" class="text-rose-600 hover:text-rose-800 font-semibold">Remove</button></td>
+                            <td class="p-2 text-right"><button onclick="openDeleteHolidayModal('{{ date }}', '{{ name }}')" class="text-rose-600 hover:text-rose-800 font-semibold">Remove</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -850,6 +840,22 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
+    <!-- Delete Holiday Confirmation Modal -->
+    <div id="delete-holiday-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4 border border-slate-100 text-center">
+            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mx-auto text-xl">🎉</div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900">Remove Holiday?</h3>
+                <p class="text-xs text-slate-500" id="delete-holiday-msg">Are you sure you want to remove this holiday?</p>
+                <input type="hidden" id="delete-holiday-date-input" value="">
+            </div>
+            <div class="flex justify-center gap-2 pt-2">
+                <button type="button" onclick="closeDeleteHolidayModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition">Cancel</button>
+                <button type="button" onclick="confirmDeleteHoliday()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-bold shadow-sm transition">Yes, Remove</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const currentYear = {{ year }};
         const currentMonth = {{ month }};
@@ -901,7 +907,36 @@ HTML_TEMPLATE = """
                 });
             }
             resetAgentForm();
-            location.reload();
+
+            // Fetch updated data to refresh the agent table without closing the modal
+            const dataRes = await fetch('/api/data');
+            const data = await dataRes.json();
+
+            const tbody = document.querySelector('#agent-modal tbody');
+            if (tbody) {
+                tbody.innerHTML = data.agents.map(agent => `
+                    <tr>
+                        <td class="p-2 font-bold text-slate-800">${agent.name}</td>
+                        <td class="p-2 text-slate-600">${agent.role}</td>
+                        <td class="p-2 text-right space-x-2">
+                            <button onclick="startEditAgent(${agent.id}, '${agent.name}', '${agent.role}')" class="text-indigo-600 hover:text-indigo-800 font-semibold">Edit</button>
+                            <button onclick="openDeleteAgentModal(${agent.id}, '${agent.name}')" class="text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            const leaveSelect = document.getElementById('leave-agent-id');
+            if (leaveSelect) {
+                leaveSelect.innerHTML = data.agents.map(a => `<option value="${a.id}">${a.name} (${a.role})</option>`).join('');
+            }
+            const agentFilter = document.getElementById('agent-filter');
+            if (agentFilter) {
+                const currentVal = agentFilter.value;
+                agentFilter.innerHTML = `<option value="all">All Agents (${data.agents.length})</option>` +
+                    data.agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+                agentFilter.value = currentVal;
+            }
         }
 
         function openDeleteAgentModal(id, name) {
@@ -1036,13 +1071,40 @@ HTML_TEMPLATE = """
             if (res.ok) location.reload();
         }
 
-        async function removeHoliday(date) {
+        function openDeleteHolidayModal(date, name) {
+            document.getElementById('delete-holiday-date-input').value = date;
+            document.getElementById('delete-holiday-msg').innerText = `Are you sure you want to remove holiday "${name}" (${date})?`;
+            document.getElementById('delete-holiday-modal').classList.remove('hidden');
+        }
+
+        function closeDeleteHolidayModal() {
+            document.getElementById('delete-holiday-modal').classList.add('hidden');
+        }
+
+        async function confirmDeleteHoliday() {
+            const date = document.getElementById('delete-holiday-date-input').value;
             const res = await fetch('/api/holidays', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ date, name: '' })
             });
-            if (res.ok) location.reload();
+            if (res.ok) {
+                closeDeleteHolidayModal();
+                // Fetch updated data to refresh holiday table without closing holiday modal
+                const dataRes = await fetch('/api/data');
+                const data = await dataRes.json();
+
+                const tbody = document.querySelector('#holiday-modal tbody');
+                if (tbody) {
+                    tbody.innerHTML = Object.entries(data.holidays).map(([d, name]) => `
+                        <tr>
+                            <td class="p-2 font-medium text-slate-800">${d}</td>
+                            <td class="p-2 text-slate-600">${name}</td>
+                            <td class="p-2 text-right"><button onclick="openDeleteHolidayModal('${d}', '${name}')" class="text-rose-600 hover:text-rose-800 font-semibold">Remove</button></td>
+                        </tr>
+                    `).join('');
+                }
+            }
         }
 
         function filterAgentSchedule() {

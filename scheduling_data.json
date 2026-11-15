@@ -41,10 +41,7 @@
         "2026-08-31": "National Heroes Day",
         "2026-11-30": "Bonifacio Day",
         "2026-12-25": "Christmas Day",
-        "2026-12-30": "Rizal Day",
-        "2026-11-16": "Asean Summit",
-        "2026-11-17": "Asean Summit",
-        "2026-11-18": "Asean Summit"
+        "2026-12-30": "Rizal Day"
     },
     "leaves": [],
     "schedule": {
@@ -52,22 +49,22 @@
             "2026-11-01": {
                 "1": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "5": {
@@ -76,35 +73,35 @@
                     "holiday": null
                 },
                 "6": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 }
             },
             "2026-11-02": {
                 "1": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
                 "5": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "6": {
@@ -115,18 +112,18 @@
             },
             "2026-11-03": {
                 "1": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "3": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "4": {
@@ -136,7 +133,7 @@
                 },
                 "5": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -147,60 +144,60 @@
             },
             "2026-11-04": {
                 "1": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": null
-                },
-                "5": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
                 "6": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 }
             },
             "2026-11-05": {
                 "1": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "5": {
+                "4": {
                     "status": "Work from Home",
                     "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -216,7 +213,7 @@
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -231,7 +228,7 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -243,18 +240,18 @@
             },
             "2026-11-07": {
                 "1": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "4": {
@@ -263,8 +260,8 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -276,22 +273,22 @@
             "2026-11-08": {
                 "1": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "5": {
@@ -300,35 +297,35 @@
                     "holiday": null
                 },
                 "6": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 }
             },
             "2026-11-09": {
                 "1": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
                 "5": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "6": {
@@ -339,18 +336,18 @@
             },
             "2026-11-10": {
                 "1": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "3": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "4": {
@@ -360,7 +357,7 @@
                 },
                 "5": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -371,60 +368,60 @@
             },
             "2026-11-11": {
                 "1": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": null
-                },
-                "5": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
                 "6": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 }
             },
             "2026-11-12": {
                 "1": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "5": {
+                "4": {
                     "status": "Work from Home",
                     "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -440,7 +437,7 @@
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -455,7 +452,7 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -467,18 +464,18 @@
             },
             "2026-11-14": {
                 "1": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "4": {
@@ -487,8 +484,8 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -500,22 +497,22 @@
             "2026-11-15": {
                 "1": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "5": {
@@ -524,131 +521,131 @@
                     "holiday": null
                 },
                 "6": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 }
             },
             "2026-11-16": {
                 "1": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
-                },
-                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
-                    "holiday": "Asean Summit"
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
                 },
                 "4": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
                 },
                 "5": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
                 },
                 "6": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "holiday": null
                 }
             },
             "2026-11-17": {
                 "1": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": "Asean Summit"
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": "Asean Summit"
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
                 },
                 "3": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
                 },
                 "4": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "holiday": null
                 },
                 "5": {
                     "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "holiday": null
                 },
                 "6": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "holiday": null
                 }
             },
             "2026-11-18": {
                 "1": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "holiday": null
                 },
                 "3": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": "Asean Summit"
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
                 },
                 "4": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": "Asean Summit"
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
                 },
                 "5": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Asean Summit"
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
                 },
                 "6": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": "Asean Summit"
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
                 }
             },
             "2026-11-19": {
                 "1": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "5": {
+                "4": {
                     "status": "Work from Home",
                     "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -664,7 +661,7 @@
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -679,7 +676,7 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -691,18 +688,18 @@
             },
             "2026-11-21": {
                 "1": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "4": {
@@ -711,8 +708,8 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -724,22 +721,22 @@
             "2026-11-22": {
                 "1": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "5": {
@@ -748,35 +745,35 @@
                     "holiday": null
                 },
                 "6": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 }
             },
             "2026-11-23": {
                 "1": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
                 "5": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "6": {
@@ -787,18 +784,18 @@
             },
             "2026-11-24": {
                 "1": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "3": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "4": {
@@ -808,7 +805,7 @@
                 },
                 "5": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -819,60 +816,60 @@
             },
             "2026-11-25": {
                 "1": {
-                    "status": "On-site",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "3": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
                     "holiday": null
                 },
                 "4": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": null
-                },
-                "5": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
                 "6": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 }
             },
             "2026-11-26": {
                 "1": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
-                    "holiday": null
-                },
-                "3": {
                     "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
-                "4": {
+                "3": {
                     "status": "Rest Day",
                     "shift": "Off",
                     "holiday": null
                 },
-                "5": {
+                "4": {
                     "status": "Work from Home",
                     "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -888,7 +885,7 @@
                     "holiday": null
                 },
                 "2": {
-                    "status": "On-site",
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -903,7 +900,7 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -915,18 +912,18 @@
             },
             "2026-11-28": {
                 "1": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "2": {
-                    "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "3": {
                     "status": "Work from Home",
-                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "4": {
@@ -935,8 +932,8 @@
                     "holiday": null
                 },
                 "5": {
-                    "status": "Rest Day",
-                    "shift": "Off",
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
                 "6": {
@@ -948,6 +945,200 @@
             "2026-11-29": {
                 "1": {
                     "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-11-30": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Bonifacio Day"
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": "Bonifacio Day"
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Bonifacio Day"
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": "Bonifacio Day"
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": "Bonifacio Day"
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Bonifacio Day"
+                }
+            }
+        },
+        "2026-12": {
+            "2026-12-01": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-02": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-03": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-04": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-05": {
+                "1": {
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
                     "holiday": null
                 },
@@ -957,13 +1148,45 @@
                     "holiday": null
                 },
                 "3": {
-                    "status": "Work from Home",
-                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "4": {
                     "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-06": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
                     "holiday": null
                 },
                 "5": {
@@ -977,41 +1200,807 @@
                     "holiday": null
                 }
             },
-            "2026-11-30": {
+            "2026-12-07": {
                 "1": {
-                    "status": "Work from Home",
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Bonifacio Day"
+                    "holiday": null
                 },
                 "2": {
                     "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Bonifacio Day"
+                    "holiday": null
                 },
                 "3": {
-                    "status": "Rest Day",
-                    "shift": "Off",
-                    "holiday": "Bonifacio Day"
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
                 },
                 "4": {
                     "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Bonifacio Day"
+                    "holiday": null
                 },
                 "5": {
                     "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Bonifacio Day"
+                    "holiday": null
+                }
+            },
+            "2026-12-08": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-09": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-10": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-11": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
                 },
                 "6": {
                     "status": "Work from Home",
                     "shift": "8:00 AM \u2013 5:00 PM",
-                    "holiday": "Bonifacio Day"
+                    "holiday": null
+                }
+            },
+            "2026-12-12": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-13": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-14": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-15": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-16": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-17": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-18": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-19": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-20": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-21": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-22": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-23": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-24": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                }
+            },
+            "2026-12-25": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Christmas Day"
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": "Christmas Day"
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Christmas Day"
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Christmas Day"
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Christmas Day"
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Christmas Day"
+                }
+            },
+            "2026-12-26": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-27": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-28": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-29": {
+                "1": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "11:00 AM \u2013 8:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                }
+            },
+            "2026-12-30": {
+                "1": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Rizal Day"
+                },
+                "2": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Rizal Day"
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Rizal Day"
+                },
+                "4": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Rizal Day"
+                },
+                "5": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": "Rizal Day"
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": "Rizal Day"
+                }
+            },
+            "2026-12-31": {
+                "1": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "2": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "3": {
+                    "status": "Work from Home",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "4": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
+                },
+                "5": {
+                    "status": "On-site",
+                    "shift": "8:00 AM \u2013 5:00 PM",
+                    "holiday": null
+                },
+                "6": {
+                    "status": "Rest Day",
+                    "shift": "Off",
+                    "holiday": null
                 }
             }
         }
     },
-    "reset_months": [
-        "2026-12"
-    ]
+    "reset_months": []
 }
